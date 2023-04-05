@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>YelpCamp</title>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="layout.css">
+  <link rel="stylesheet" href="finalStyle.css">
+</head>
+<body style="background-image: linear-gradient(to bottom, #8f1e5e, #8e2773, #873288, #7a3f9e, #644cb2, #734eb7, #8250bb, #9152bf, #bf48ad, #df4494, #f24c7a, #fb5f5f);">
+  <nav class="nav">
+
+    <img src="./starters/Assets/Logo.svg" id="logo" alt="Logo"></img>
+
+  <div class="nav_logs">
+    <a href="login.html" id="login" style="margin-right:1rem;"><button class="primary--btn">Login</button></a>
+    <a href="signUp.html">
+      <button class="primary--btn" id="signup">Sign Up</button>
+    </a>
+  </div>
+
+
+</nav>
+
+<div class="searchwindow">
+  <div class="headings">
+    <h2 class="primary--heading">
+      Welcome to YelpCamp!🔥
+    </h2>
+    <p class="secondary--heading">
+      View our hand-picked campgrounds from all over the world,or add your own.
+    </p>
+  </div>
+
+<br><br>
+
+  <div id="icondiv">
+    <img src="./starters/Assets/Search Icon.svg" id="searchsvg" alt=""></img>
+  <input type="search" name="search" id="search" placeholder="search for camps">
+</div>
+<br><br><br>
+
+<button class="mode--btn" style="margin-left:45rem;">Search</button>
+
+<a href="addnewcamp.html" id="login2" style="display:block;margin-top:1rem;margin-left:42.5rem;text-align: center;"><button class="mode--btn">Add your Camp</button></a>
+
+</div>
+ 
+<div class="cardholder">
+		
+</div>
+
+
+<img src="./starters/Assets/Logo.svg" alt="" style="margin: 1rem auto; display:block;">
+
+<script
+src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
+integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
+crossorigin="anonymous">
+</script>
+<script>
+const signUpBtn = document.querySelector('#signup')
+const loginLink = document.querySelector('#login')
+const figContainer = document.querySelector('.cardholder')
+
+if (localStorage.getItem('token') != undefined) {
+
+
+signUpBtn.innerText = 'Hey..' + localStorage.getItem('username') + '😊'
+signUpBtn.disabled = true
+loginLink.style.display = 'none'
+
+}
+
+function makeCards( {
+images, name, description, _id, location
+}) {
+const html = `<figure data-campid=${_id} data-location=${location} class="campagefigure">
+<div class="figure__imgcontainer">
+<img src=${images.join('')} alt="...">
+</div>
+<p class="figure__name">${name}</p>
+<p class="figure__desc">${description}</p>
+<button class="figure__btn">View campground</button></figure>`
+document.querySelector('.cardholder').insertAdjacentHTML('afterbegin', html)
+}
+
+async function fetchData() {
+const {
+data: {
+data
+}} = await axios.get('http://127.0.0.1:5000/yelpcamp/')
+
+for (let obj of data) {
+makeCards(obj)
+}
+
+}
+
+fetchData()
+
+figContainer.addEventListener('click', async function(e) {
+try {const campId = e.target.closest('.campagefigure').dataset.campid
+const {
+data
+} = await axios.get(`http://127.0.0.1:5000/yelpcamp/${campId}`, {
+headers: {
+Authorization: `Bearer ${localStorage.getItem('token')}`
+}})
+await localStorage.setItem('campsitedata', JSON.stringify(data))
+
+location.assign('individualCampage.html')
+}
+catch(e){
+  alert('Please login or Register yourself😇')
+}
+
+
+})
+
+
+
+</script>
+</body>
+</html>

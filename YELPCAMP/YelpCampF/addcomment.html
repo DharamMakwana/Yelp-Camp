@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>YelpCamp</title>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="layout.css">
+  <link rel="stylesheet" href="finalStyle.css">
+</head>
+<body>
+  <nav class="nav">
+
+    <img src="./starters/Assets/Logo.svg" id="logo" alt="Logo"></img>
+
+</nav>
+
+<div style="display:grid;grid-template-rows:.2fr .6fr .2fr;align-content: center;grid-row-gap:2rem;margin:2rem auto;">
+
+  <h2 class="primary--heading">
+    Add New Review
+  </h2>
+
+  <textarea class='reviewdescription' rows="20" placeholder="description..." style="padding:1rem;"></textarea>
+
+  <button type="submit" class="primary--btn">
+    Post Review
+  </button>
+</div>
+
+<img src="./starters/Assets/Logo.svg" alt="" style="margin: 1rem auto; display:block;">
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+
+  const campData = JSON.parse(localStorage.getItem('campsitedata'))
+
+  const reviewBtn = document.querySelector('button[type="submit"]')
+  const comment = document.querySelector('.reviewdescription')
+
+  reviewBtn.addEventListener('click', async function (e) {
+    e.preventDefault()
+    const {data} = await axios.patch(`http://127.0.0.1:5000/yelpcamp/${campData._id}`, {
+      id: campData._id,
+      comment: comment.value
+    }, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }})
+
+  await  localStorage.setItem('campsitedata',JSON.stringify(data))
+    location.assign('individualCampage.html')
+  })
+</script>
+</body>
+</html>

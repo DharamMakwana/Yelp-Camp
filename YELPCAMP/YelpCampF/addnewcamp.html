@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>YelpCamp</title>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="layout.css">
+  <link rel="stylesheet" href="finalStyle.css">
+</head>
+<body>
+  <nav class="nav">
+    <img src="./starters/Assets/Logo.svg" id="logo" alt="Logo"></img>
+</nav>
+
+<div class="container" style="display: grid;align-content: center;grid-template-rows: .1fr .8fr .1fr; grid-row-gap:1.5rem;">
+  <h2 class="primary--heading">
+    Add new campground on our list.
+  </h2>
+  <form>
+
+    <div class="form_fields">
+      <label>Campground Name</label>
+      <br>
+      <input type="text" name="name" class="form_inputs" placeholder="Seven Hills Valley">
+    </div>
+
+    <div class="form_fields">
+      <label>Longitude</label>
+      <br>
+      <input type="text" name="long" class="form_inputs" placeholder="112.1401">
+    </div>
+
+    <div class="form_fields">
+      <label>Latitude</label>
+      <br>
+      <input type="text" name="lat" class="form_inputs" placeholder="36.0544">
+    </div>
+
+    <div class="form_fields">
+      <label>Price</label>
+      <br>
+      <input type="text" name="price" class="form_inputs" placeholder="$96/night">
+    </div>
+
+    <div class="form_fields">
+      <label>Image Link</label>
+      <br>
+      <input type="text" name="images" class="form_inputs" placeholder="https://unsplash.com">
+    </div>
+
+    <div class="form_fields">
+      <label>Description</label>
+      <br>
+      <textarea rows="12" cols="15" name="description" class="form_inputs" placeholder="Write here......"></textarea>
+    </div>
+  </form>
+
+  <button type="submit" class="primary--btn">Add Campground</button>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  const name = document.querySelector("input[name = 'name']")
+  const price = document.querySelector("input[name = 'price']")
+  const lat = document.querySelector("input[name = 'lat']")
+  const long = document.querySelector("input[name = 'long']")
+  const images = document.querySelector("input[name = 'images']")
+  const description = document.querySelector('textarea')
+  const submitBtn = document.querySelector('.primary--btn')
+
+  submitBtn.addEventListener('click', async function (e) {
+    e.preventDefault()
+    const data = await axios.post('http://127.0.0.1:5000/yelpcamp', {
+      name: name.value,
+      lat: lat.value,
+      long: long.value,
+      price: price.value,
+      images: images.value,
+      description: description.value
+    }, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+    location.href = '/searchPage.html'
+  })
+</script>
+</nav>
+</body>
+</html>

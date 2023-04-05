@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>YelpCamp</title>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="layout.css">
+  <link rel="stylesheet" href="finalStyle.css">
+</head>
+<body style="background-image: linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12);">
+  <nav class="nav">
+
+    <img src="./starters/Assets/Logo.svg" id="logo" alt="Logo"></img>
+  <a href="searchPage.html">&larr;back to campgrounds</a>
+
+</nav>
+
+<div class="logincontainer">
+
+<div class="formbody">
+  <h2 class="primary--heading">
+    Start exploring camps from all around the world.
+  </h2>
+
+  <form id="form">
+
+    <div class="form_fields">
+      <label>Name</label>
+      <br>
+      <input type="text" name="name" class="form_inputs" placeholder="Jennifer Lawrence">
+    </div>
+
+    <div class="form_fields">
+      <label>E-mail</label>
+      <br>
+      <input type="email" name="email" class="form_inputs" placeholder="Jlaw1988@gmail.com">
+    </div>
+
+    <div class="form_fields">
+      <label>Password</label>
+      <br>
+      <input type="password" name="password" class="form_inputs" placeholder="Enter your password">
+    </div>
+
+  </form>
+  
+  <div class="linkandbtn">
+  				<button type="submit" class="primary--btn" id="submitform">Sign Up</button>
+
+  				<span class="createac">Already a member?<a href="login.html">login here</a></span>
+  </div>
+  
+  
+</div>
+
+<figure class="comment">
+  <h2>
+    <q>YelpCamp has honestly saved me hours of research time, and the camps on here are definitely well picked and added.</q>
+  </h2>
+  <div class="info">
+    <img src="./starters/Assets/User Testimonial.svg" alt="">
+
+    <div>
+      <p class="name">
+        May Andrews
+      </p>
+      <p class="profession">
+        Professional Hiker
+      </p>
+    </div>
+
+  </div>
+</figure>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js">
+</script>
+
+<script>
+  const nameValue = document.querySelector("input[name = 'name']")
+  const mailValue = document.querySelector("input[name = 'email']")
+  const passValue = document.querySelector("input[name = 'password']")
+
+  const submitForm = document.querySelector('#submitform')
+
+  submitForm.addEventListener('click', async (e) => {
+    e.preventDefault()
+    const {data:{token}} = await axios.post('http://127.0.0.1:5000/yelpcamp/auth/register', {
+        name: nameValue.value,
+        email: mailValue.value,
+        password: passValue.value
+      })
+
+    localStorage.setItem('token', token)
+    localStorage.setItem('username',nameValue.value)
+    location.assign('searchpage.html')
+  })
+</script>
+
+</body>
+</html>
